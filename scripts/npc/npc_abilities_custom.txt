@@ -1,0 +1,45 @@
+// Dota Heroes File
+"DOTAAbilities"
+{
+	"bid50"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/bid"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCastPoint"				"0"
+		"AbilityTextureName"			"techies_focused_detonate"	// steal the icon from this ability
+		"MaxLevel"						"1"							// Maximum skillable level
+	}
+	"bid250"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/bid"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCastPoint"				"0"
+		"AbilityGoldCost"				"250"
+		"AbilityTextureName"			"techies_focused_detonate"	// steal the icon from this ability
+		"MaxLevel"						"1"							// Maximum skillable level
+	}
+
+	"special_bonus_exampletalent"			// start talent names with special_bonus_
+	{
+		"BaseClass"					"special_bonus_undefined"
+		"AbilityType"				"DOTA_ABILITY_TYPE_ATTRIBUTES"
+		"AbilityBehavior"			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"value"						"90"
+			}
+		}
+	}
+	
+	"seasonal_decorate_tree"
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AssociatedConsumable"			"0"
+	}
+
+}
