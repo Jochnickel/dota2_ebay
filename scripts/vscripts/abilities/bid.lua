@@ -12,7 +12,6 @@ end
 
 function bid:GetIntrinsicModifierName()
 	local hero = self:GetCaster()
-	hero:AddNewModifier(hero,nil,"wishmodifier",nil)
 	return "bidmodifier"
 end
 
@@ -41,19 +40,21 @@ end
 function bidmodifier:IsPermanent() return true end
 
 function bidmodifier:OnCreated( kv )
-	self:GetAbility().modifier = self
 
 	local hero = self:GetParent()
 	local ownPlayerID = hero:GetPlayerOwnerID()
+	if IsServer() then
+		hero:AddNewModifier(hero,nil,"wishmodifier",{})
+	end
 
-	ListenToGameEvent("auction_current_item",function(self,event)
-		for k,v in pairs(event) do			print("modifier auction_current_item",self,k,v)		end
-
+	self.eventlistener = ListenToGameEvent("auction_current_item",function(self,event)
+		-- for k,v in pairs(event) do			print("modifier auction_current_item",self,k,v)		end
 		self.item = event.item
 		self.maxbidder = event.maxbidder_playerid
 		local bids = load('return '..event.bids)()
 		local ownBid = bids[ownPlayerID] or 0
 		self:SetStackCount(ownBid)
+
 
 	end, self)
 
@@ -61,18 +62,34 @@ function bidmodifier:OnCreated( kv )
 
 end
 
+function bidmodifier:OnDetroy()
+	StopListeningToGameEvent(self.eventlistener)
+end
+-----------------------------------------------------
+
 wishmodifier = class({})
-
 wishmodifier.item = ""
-
 function wishmodifier:IsPermanent() return true end
-function wishmodifier:IsHidden() return ""~=self.item end
-function bidmodifier:GetTexture() return self.item end
+function wishmodifier:IsHidden() return ""==self.item end
+function wishmodifier:GetTexture()
+	if not self.item then 
+		FireGameEvent("auction_current_item_request",{})
+	end
+	return self.item
+end
 
 function wishmodifier:OnCreated(kv)
-	local ownPlayerID = hero:GetPlayerOwnerID()
-	ListenToGameEvent("auction_current_item",function(self,event)
+	local ownPlayerID = self:GetParent():GetPlayerOwnerID()
+	self.eventlistener = ListenToGameEvent("auction_current_item",function(self,event)
+		-- for k,v in pairs(event) do			print("wishmodifier event",self.item,k,v,wishlist,ownPlayerID)		end
 		local wishlist = load('return '..event.wishlist)()
-		self.item = wishlist[ownPlayerID] or ""
+		local item = wishlist[ownPlayerID]
+		self.item = item or ""
+		
+		self:ForceRefresh()
 	end, self)
+end
+
+function wishmodifier:OnDestroy()
+	StopListeningToGameEvent(self.eventlistener)
 end

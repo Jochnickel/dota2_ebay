@@ -262,6 +262,7 @@ function tableToString(t)
 	if "table"~=type(t) then error("tableToString: argument is not a table") end
 	
 	function loopPrevention(t, root)
+		if "string"==type(t) then return '"'.. t ..'"' end
 		if "table"~=type(t) then return t end
 		if t==root then return "root" end
 		root = root or t

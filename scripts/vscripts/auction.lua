@@ -36,8 +36,8 @@ end, nil)
 
 
 ListenToGameEvent("auction_placed_bid", function(event)
-	print("placed_bid")
-	PrintTable(event)
+	-- print("placed_bid")
+	-- PrintTable(event)
 	local playerID = event.playerID
 	local gold = event.gold
 	bids[playerID] = bids[playerID] or 0
@@ -46,7 +46,7 @@ ListenToGameEvent("auction_placed_bid", function(event)
 	if bids[playerID]>highestBid then
 		highestBidder = playerID
 	end
-	say("highestBidder", highestBidder, bids[highestBidder])
+	-- say("highestBidder", highestBidder, bids[highestBidder])
 	FireGameEvent("auction_current_item_request", {})
 end, nil)
 
@@ -89,26 +89,34 @@ end
 
 function auction:WishlistItem( playerID, itemname )
 	wishlist[playerID] = itemname
+	FireGameEvent("auction_current_item_request",{})
 end
 
 ListenToGameEvent("auction_start", function(event)
 	print("Auction starts!")
 	local interval = event.interval
 	Timers:CreateTimer(function()
-		print("next auction round", interval, highestBidder)
+		-- print("next auction round", interval, highestBidder)
 		local highestBidderHero = highestBidder and PlayerResource:GetSelectedHeroEntity(highestBidder)
+		local highestBid = bids[highestBidder]
+
 		if highestBidderHero then
-			-- FireGameEvent("auction_item_sold",{highestBidder = highestBidder, price = bids[highestBidder]})
-			PlayerResource:GetSelectedHeroEntity(highestBidder):AddItemByName(currentItem)
-			HUDError(currentItem.." got sold for "..bids[highestBidder].." gold to "..highestBidder, -1)
+			highestBidderHero:AddItemByName(currentItem)
+		end
+		if currentItem and highestBid then
+			HUDError(currentItem.." got sold for "..highestBid.." gold", -1)
+		end
+		if highestBidder then
 			bids[highestBidder] = nil
-			for pid, gold in pairs(bids) do
-				local hero = PlayerResource:GetSelectedHeroEntity(pid)
-				local refund = REFUND*gold
-				PlayerResource:ModifyGold(pid, refund, (reliable==false), DOTA_ModifyGold_PurchaseItem)
+		end
+		for pid, gold in pairs(bids) do
+			local hero = PlayerResource:GetSelectedHeroEntity(pid)
+			local refund = REFUND*gold
+			PlayerResource:ModifyGold(pid, refund, (false and notreliable), DOTA_ModifyGold_PurchaseItem)
+			if hero then
 				SendOverheadEventMessage(hero:GetPlayerOwner(), OVERHEAD_ALERT_GOLD, hero, refund, nil)
-				bids[pid] = nil
 			end
+			bids[pid] = nil
 		end
 		currentItem = auction:GetWishItem() or auction:GetRandomItem(GameRules:GetDOTATime(false,false)*0.1)
 		bids = {}

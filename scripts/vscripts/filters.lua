@@ -71,7 +71,8 @@ function Filters:ExecuteOrderFilter(event)
 
 	elseif (DOTA_UNIT_ORDER_SELL_ITEM==orderType) or (DOTA_UNIT_ORDER_DISASSEMBLE_ITEM==orderType) then
 
-		if auction:IsAuctionItem(possibleItemName) then
+		local itemname = ability:GetName()
+		if auction:IsAuctionItem(itemname) then
 			ability:Destroy()
 		end
 		
