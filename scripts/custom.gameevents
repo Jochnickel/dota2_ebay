@@ -32,22 +32,22 @@
 	"addon_game_mode_precache" {}
 	"addon_game_mode_spawn" {}
 	"addon_game_mode_activate" {}
-	"current_item" {
+	"auction_current_item" {
 		"item"					"string"
-		"bids"					"local"
+		"bids"					"string"
+		"wishlist"				"string"
 		"maxbidder_playerid"	"short"
 	}
-	"current_item_request" {}
-	"item_sold" {
+	"auction_current_item_request" {}
+	"auction_item_sold" {
 		"highestBidder"			"short"
 		"price"					"short"
 	}
-	"item_wish"	{
-		"playerid"				"short"
-		"item"					"string"
-	}
-	"placed_bid" {
+	"auction_placed_bid" {
 		"playerID"	"short"
 		"gold"	"short"
+	}
+	"auction_start" {
+		"interval"				"short"
 	}
 }

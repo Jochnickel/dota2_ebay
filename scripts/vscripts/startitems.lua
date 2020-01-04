@@ -6,8 +6,8 @@ local startitems = {
 	-- item_travel_boots = {amt=20, cd= 100},
 }
 local bonusabilities = {
-	bid250 = { },
-	bid50 = { },
+	bid250 = { lvl = 1 },
+	bid50 = { lvl = 1 },
 	-- exampleability = { lvl = 1, cd = 120 , nokey = true, hidden = true, cast = true },
 	-- roshan_spell_block = { lvl = 4, nokey = true },
 }

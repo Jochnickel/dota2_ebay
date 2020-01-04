@@ -4,7 +4,7 @@
 	"bid50"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/bid"
+		"ScriptFile"					"abilities/bid50"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastPoint"				"0"
 		"AbilityTextureName"			"techies_focused_detonate"	// steal the icon from this ability
@@ -13,10 +13,9 @@
 	"bid250"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/bid"
+		"ScriptFile"					"abilities/bid250"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastPoint"				"0"
-		"AbilityGoldCost"				"250"
 		"AbilityTextureName"			"techies_focused_detonate"	// steal the icon from this ability
 		"MaxLevel"						"1"							// Maximum skillable level
 	}

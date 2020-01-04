@@ -28,6 +28,8 @@ ListenToGameEvent("player_chat", function(keys)
 		TeamList:GetFreeCouriers()
 	elseif ("-start"==text) and (playerID) then
 		cheatStart()
+	elseif ("-fakebid"==text) and (playerID) then
+		FireGameEvent("auction_placed_bid",{playerID = 25, gold = RandomInt(0,1000) })
 	elseif ("-nearents"==text) and (playerID) then
 		for _,ent in pairs(Entities:FindAllInSphere(hero:GetAbsOrigin(),800)) do
 			print("Near Entities:",ent:GetClassname(),ent:GetName(),ent:entindex(),"Team",ent:GetTeam())
@@ -35,7 +37,7 @@ ListenToGameEvent("player_chat", function(keys)
 	elseif ("-entities"==text) and (playerID) then
 		local iter = Entities:First()
 		while(iter) do
-			if (iter:GetName()~="") then print("Entities:",iter:GetClassname(),iter:GetName(),iter:entindex(),"Team",ent:GetTeam()) end
+			if (iter:GetName()~="") then print("Entities:",iter:GetClassname(),iter:GetName(),iter:entindex(),"Team",iter:GetTeam()) end
 			iter = Entities:Next(iter)
 		end
 	elseif ("-abils"==text) and (playerID) then

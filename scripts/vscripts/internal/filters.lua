@@ -15,6 +15,14 @@ ListenToGameEvent("addon_game_mode_activate",function()
 	GameRules:GetGameModeEntity():SetModifyGoldFilter( InternalFilters.ModifyGoldFilter, contxt )
 	GameRules:GetGameModeEntity():SetRuneSpawnFilter( InternalFilters.RuneSpawnFilter, contxt )
 	GameRules:GetGameModeEntity():SetTrackingProjectileFilter( InternalFilters.TrackingProjectileFilter, contxt )
+
+	if not _G.Filters then
+		_G.Filters = {}
+		for k,v in pairs(InternalFilters) do
+			_G.Filters[k] = function()end
+		end
+	end
+
 end, nil)
 
 function InternalFilters:AbilityTuningValueFilter(event)
@@ -80,7 +88,7 @@ function InternalFilters:ModifyExperienceFilter(event)
 
 	local teamHeroes = PlayerResourceButt:GetMainFriendlyHeroes(event.player_id_const)
 	teamHeroes[event.player_id_const] = nil
-	local count = length(teamHeroes)
+	local count = table.length(teamHeroes)
 
 	local singleAmt = event.experience * BUTTINGS.SHARED_XP_PERCENTAGE * 0.01 / count
 	singleAmt = math.floor(singleAmt + 0.5)
@@ -110,7 +118,7 @@ function InternalFilters:ModifyGoldFilter(event)
 	
 	local teamPlayers = PlayerResourceButt:GetFriendlyPlayers(event.player_id_const)
 	teamPlayers[event.player_id_const] = nil
-	local count = length(teamPlayers)
+	local count = table.length(teamPlayers)
 
 	local singleAmt = event.gold * BUTTINGS.SHARED_GOLD_PERCENTAGE * 0.01 / count
 	singleAmt = math.floor(singleAmt + 0.5)

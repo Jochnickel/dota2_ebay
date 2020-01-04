@@ -276,6 +276,10 @@ function CDOTA_BaseNPC:AddNewModifierButt(caster, optionalSourceAbility, modifie
 	self:AddNewModifier(caster, optionalSourceAbility, modifierName, modifierData)
 end
 
+function CDOTA_BaseNPC:AddNewModifierByName(modifierName, optData)
+	self:AddNewModifier(self, nil, modifierName, optData or {})
+end
+
 function CDOTA_BaseNPC:RemoveItemByName( itemName )
 	for i=1,10 do
 		local item = self:GetItemInSlot(i)

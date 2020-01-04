@@ -258,6 +258,33 @@ function globalsToString()
 	return out
 end
 
+function tableToString(t)
+	if "table"~=type(t) then error("tableToString: argument is not a table") end
+	
+	function loopPrevention(t, root)
+		if "table"~=type(t) then return t end
+		if t==root then return "root" end
+		root = root or t
+		local out = "{"
+		for k,v in pairs(t) do
+			local typ = type(k)
+			if "string"==typ then
+				out = out ..'["' .. k .. '"] = '
+			elseif "number"==typ then
+				out = out .. '[' .. k .. '] = '
+			else
+				error("tableToString: only accepts number or string keys")
+			end
+			out = out .. loopPrevention(v,root) .. ","
+		end
+		out = out .. "}"
+		return out
+	end
+
+	return loopPrevention(t)
+end
+
+
 -------------------------- BAREBONES STUFF -------------------------
 
 function DebugPrint(...)

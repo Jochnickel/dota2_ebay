@@ -31,6 +31,8 @@ softRequire("settings_misc")
 softRequire("startitems")
 softRequire("thinker")
 
+softRequire("auction")
+
 function Precache( context )
 	FireGameEvent("addon_game_mode_precache",nil)
 	PrecacheResource("soundfile", "soundevents/custom_sounds.vsndevts", context)

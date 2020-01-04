@@ -48,6 +48,8 @@ function Filters:DamageFilter(event)
 	return true
 end
 
+require("auction")
+
 function Filters:ExecuteOrderFilter(event)
 	-- PrintTable(event)
 	local ability = event.entindex_ability and EntIndexToHScript(event.entindex_ability)
@@ -60,8 +62,22 @@ function Filters:ExecuteOrderFilter(event)
 	local units = event.units
 	local unit = units and units["0"] and EntIndexToHScript(units["0"])
 
-	-- --  example
-		-- if pos._len()<2000 then return false end
+	local possibleItemName = auction:GetItemnameByID(event.entindex_ability)
+	if (DOTA_UNIT_ORDER_PURCHASE_ITEM==orderType) and (auction:IsAuctionItem(possibleItemName)) then
+		
+		auction:WishlistItem(playerID, possibleItemName)
+		HUDError("Wishlisted "..possibleItemName, playerID)
+		return false
+
+	elseif (DOTA_UNIT_ORDER_SELL_ITEM==orderType) or (DOTA_UNIT_ORDER_DISASSEMBLE_ITEM==orderType) then
+
+		if auction:IsAuctionItem(possibleItemName) then
+			ability:Destroy()
+		end
+		
+	elseif false then
+		-- transfer cost ?
+	end
 
 	return true
 end
